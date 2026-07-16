@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 교육 3일 정리</title>
+<style>
+  :root {
+    --bg-0: #05060a;
+    --bg-1: #0b0e16;
+    --text-strong: #f5f7fb;
+    --text-soft: rgba(233, 238, 248, 0.72);
+    --text-mute: rgba(200, 208, 224, 0.5);
+    --stroke: rgba(255, 255, 255, 0.1);
+    --glass: rgba(255, 255, 255, 0.045);
+    --glass-hi: rgba(255, 255, 255, 0.08);
+    --shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.75);
+    --radius: 24px;
+    --grad-1: linear-gradient(135deg, #6d8bff 0%, #a86bff 55%, #ff7ac0 100%);
+    --grad-2: linear-gradient(135deg, #38e6c5 0%, #4d8bff 100%);
+    --grad-3: linear-gradient(135deg, #ffb35a 0%, #ff6f91 100%);
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Pretendard",
+      "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    color: var(--text-strong);
+    background:
+      radial-gradient(1100px 700px at 12% -8%, rgba(109, 139, 255, 0.28), transparent 60%),
+      radial-gradient(900px 650px at 88% 6%, rgba(168, 107, 255, 0.24), transparent 58%),
+      radial-gradient(1000px 800px at 50% 118%, rgba(56, 230, 197, 0.16), transparent 60%),
+      linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(28px, 6vw, 72px) clamp(20px, 5vw, 56px) 96px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    text-align: center;
+    padding: clamp(48px, 10vw, 108px) 0 clamp(40px, 7vw, 76px);
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    padding: 8px 16px;
+    border: 1px solid var(--stroke);
+    border-radius: 999px;
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    margin-bottom: 26px;
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both;
+  }
+  .eyebrow .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--grad-1);
+    box-shadow: 0 0 12px rgba(168, 107, 255, 0.8);
+  }
+
+  .hero h1 {
+    font-size: clamp(44px, 8.5vw, 92px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+    background: linear-gradient(180deg, #ffffff 0%, #c6cfe6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.12s both;
+  }
+
+  .hero .sub {
+    margin-top: 22px;
+    font-size: clamp(17px, 2.4vw, 22px);
+    color: var(--text-soft);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+  }
+
+  .hero .rule {
+    width: 72px; height: 4px; border-radius: 999px;
+    margin: 34px auto 0;
+    background: var(--grad-1);
+    box-shadow: 0 0 24px rgba(168, 107, 255, 0.55);
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.28s both;
+  }
+
+  /* ---------- Cards ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(18px, 2.6vw, 28px);
+  }
+
+  .card {
+    position: relative;
+    border-radius: var(--radius);
+    border: 1px solid var(--stroke);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    padding: clamp(26px, 3vw, 36px);
+    overflow: hidden;
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.45s ease, border-color 0.45s ease, background 0.45s ease;
+    animation: cardIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .card:nth-child(1) { animation-delay: 0.34s; }
+  .card:nth-child(2) { animation-delay: 0.46s; }
+  .card:nth-child(3) { animation-delay: 0.58s; }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--accent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    top: -40%; right: -30%;
+    width: 60%; height: 60%;
+    background: var(--accent);
+    filter: blur(60px);
+    opacity: 0.14;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    pointer-events: none;
+  }
+
+  .card:hover {
+    transform: translateY(-12px) scale(1.025);
+    border-color: transparent;
+    background: var(--glass-hi);
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+  }
+  .card:hover::before { opacity: 1; }
+  .card:hover::after { opacity: 0.32; transform: scale(1.15); }
+
+  .card--1 { --accent: var(--grad-1); }
+  .card--2 { --accent: var(--grad-2); }
+  .card--3 { --accent: var(--grad-3); }
+
+  .badge {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .badge .num {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border-radius: 999px;
+    color: #05060a;
+    background: var(--accent);
+  }
+  .badge .label {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+  }
+
+  .card h2 {
+    font-size: clamp(22px, 2.6vw, 27px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .items { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .items li {
+    position: relative;
+    padding-left: 30px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text-soft);
+    letter-spacing: -0.01em;
+  }
+  .items li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 9px;
+    width: 14px; height: 14px;
+    border-radius: 5px;
+    background: var(--accent);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
+  }
+
+  /* ---------- Footer note ---------- */
+  .apply {
+    margin-top: clamp(40px, 6vw, 68px);
+    border-radius: var(--radius);
+    border: 1px solid var(--stroke);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    padding: clamp(30px, 4vw, 46px);
+    animation: cardIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.7s both;
+  }
+  .apply h3 {
+    font-size: clamp(20px, 2.6vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .apply p {
+    font-size: 14px;
+    color: var(--text-mute);
+    margin-bottom: 26px;
+  }
+  .apply .lines { display: flex; flex-direction: column; gap: 22px; }
+  .apply .line {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .apply .line .idx {
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    font-size: 14px; font-weight: 700;
+    color: var(--text-soft);
+    border: 1px solid var(--stroke);
+    background: var(--glass);
+  }
+  .apply .line .blank {
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.28), rgba(255,255,255,0.06));
+    border-radius: 2px;
+  }
+
+  footer {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-mute);
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- Animations ---------- */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(26px); filter: blur(6px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <span class="eyebrow"><span class="dot"></span>3-Day Program</span>
+      <h1>AI 교육 3일 정리</h1>
+      <p class="sub">3일 동안 배운 것</p>
+      <div class="rule"></div>
+    </header>
+
+    <section class="grid">
+      <article class="card card--1">
+        <div class="badge"><span class="num">Day 1</span><span class="label">기초 · 도구</span></div>
+        <h2>프롬프트와 도구</h2>
+        <ul class="items">
+          <li>프롬프트 4요소 (역할 · 맥락 · 할 일 · 형식)</li>
+          <li>3대 AI 도구 비교</li>
+          <li>바이브 코딩</li>
+          <li>터미널과 MCP</li>
+        </ul>
+      </article>
+
+      <article class="card card--2">
+        <div class="badge"><span class="num">Day 2</span><span class="label">스킬 · 에이전트</span></div>
+        <h2>스킬과 멀티 에이전트</h2>
+        <ul class="items">
+          <li>스킬로 형식 고정</li>
+          <li>에이전트 만들기</li>
+          <li>멀티 에이전트 검토</li>
+          <li>조율 규칙 (CLAUDE.md)</li>
+        </ul>
+      </article>
+
+      <article class="card card--3">
+        <div class="badge"><span class="num">Day 3</span><span class="label">구축 · 운영</span></div>
+        <h2>구축과 배포</h2>
+        <ul class="items">
+          <li>에이전트 구축 순서</li>
+          <li>GitHub Pages 배포</li>
+          <li>디버깅</li>
+          <li>데스크탑에서 지속 관리</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="apply">
+      <h3>현업에 적용해볼 것</h3>
+      <p>배운 것을 내 업무에 어떻게 쓸지 적어보세요.</p>
+      <div class="lines">
+        <div class="line"><span class="idx">1</span><span class="blank"></span></div>
+        <div class="line"><span class="idx">2</span><span class="blank"></span></div>
+        <div class="line"><span class="idx">3</span><span class="blank"></span></div>
+      </div>
+    </section>
+
+    <footer>AI 교육 3일 정리 · Executive Summary</footer>
+  </main>
+</body>
+</html>
